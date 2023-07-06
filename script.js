@@ -237,3 +237,52 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 //   this.style.backgroundColor = randomColor();
 //   console.log('NAV', e.target, e.currentTarget);
 // });
+
+// selecting elements
+
+const h1 = document.querySelector('h1');
+
+// // going downwards : child
+// console.log(h1.querySelectorAll('.highlight'));
+// // result: NodeList [ span.highlight, span.highlight ]
+// console.log(h1.childNodes);
+// // result: NodeList(9) [ #text, <!--  Green highlight effect  -->, #text, span.highlight, #text, br, #text, span.highlight, #text ]
+// console.log(h1.children);
+// // result: HTMLCollection { 0: span.highlight, 1: br, 2: span.highlight, length: 3 }
+
+// console.log(h1.firstElementChild);
+// // result: <span class="highlight">
+
+// console.log(h1.lastElementChild);
+// // result: <span class="highlight">
+
+// // going upwards: parents
+// console.log(h1.parentNode);
+// // result: <div class="header__title">
+
+// console.log(h1.parentElement);
+// // result: <div class="header__title">
+
+// // closest means parent elements even how far/deep the parent is
+// h1.closest('.header').style.background = 'red';
+
+// going sideways : siblings
+// console.log(h1.previousElementSibling);
+// // result: null
+// console.log(h1.nextElementSibling);
+// // result: <h4>
+
+// console.log(h1.previousSibling);
+// // result: #text "\n        "
+
+// console.log(h1.nextSibling);
+// // result: #text "\n        "
+
+// // selects the h1, then go up to its parent
+// // then selects all the children
+// console.log(h1.parentElement.children);
+// // result: HTMLCollection { 0: h1, 1: h4, 2: button.btn--text.btn--scroll-to, 3: img.header__img, length: 4 }
+
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.color = 'red';
+// });
