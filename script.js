@@ -1,5 +1,8 @@
 'use strict';
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -29,6 +32,70 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Scolling
+
+// scrolling - other way
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     // result: #section--3
+
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// scrolling better way
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matching the strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// btnScrollTo.addEventListener('click', function (e) {
+//   const s1coordinate = section1.getBoundingClientRect();
+//   console.log(s1coordinate);
+
+//   // e.target means btnScrollTo or to its self like the this keyword
+//   console.log(e.target.getBoundingClientRect());
+
+//   // current X and Y coordinate of the button
+//   console.log('current scroll(x,y)', window.pageXOffset, window.pageYOffset);
+
+//   console.log(
+//     'height/width viewport',
+//     // current height of the viewport
+//     document.documentElement.clientHeight,
+//     // current width of the viewport
+//     document.documentElement.clientWidth
+//   );
+
+//   // to scroll to the desired section (old way)
+//   // window.scrollTo({
+//   //   left: s1coordinate.left + window.pageXOffset,
+//   //   top: s1coordinate.top + window.pageYOffset,
+//   //   behavior: 'smooth',
+//   // });
+
+//   // to scroll to the desired section (new way)
+//   section1.scrollIntoView({ behavior: 'smooth' });
+// });
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
 
 // Selecting elements
 // to select all elements
@@ -127,38 +194,6 @@ document.addEventListener('keydown', function (e) {
 // // it will override all classes
 // logo.className = 'Jonas';
 
-// const btnScrollTo = document.querySelector('.btn--scroll-to');
-// const section1 = document.querySelector('#section--1');
-
-// btnScrollTo.addEventListener('click', function (e) {
-//   const s1coordinate = section1.getBoundingClientRect();
-//   console.log(s1coordinate);
-
-//   // e.target means btnScrollTo or to its self like the this keyword
-//   console.log(e.target.getBoundingClientRect());
-
-//   // current X and Y coordinate of the button
-//   console.log('current scroll(x,y)', window.pageXOffset, window.pageYOffset);
-
-//   console.log(
-//     'height/width viewport',
-//     // current height of the viewport
-//     document.documentElement.clientHeight,
-//     // current width of the viewport
-//     document.documentElement.clientWidth
-//   );
-
-//   // to scroll to the desired section (old way)
-//   // window.scrollTo({
-//   //   left: s1coordinate.left + window.pageXOffset,
-//   //   top: s1coordinate.top + window.pageYOffset,
-//   //   behavior: 'smooth',
-//   // });
-
-//   // to scroll to the desired section (new way)
-//   section1.scrollIntoView({ behavior: 'smooth' });
-// });
-
 // const h1 = document.querySelector('h1');
 
 // const alertH1 = function (e) {
@@ -177,28 +212,28 @@ document.addEventListener('keydown', function (e) {
 //   alert('onmouseenter alert');
 // };
 
-// create random colors
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+// // create random colors
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
 
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
 
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('LINK', e.target, e.currentTarget);
-  console.log(e.currentTarget === this);
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINK', e.target, e.currentTarget);
+//   console.log(e.currentTarget === this);
 
-  // stop propagation
-  // e.stopPropagation();
-});
+//   // stop propagation
+//   // e.stopPropagation();
+// });
 
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('CONTAINER', e.target, e.currentTarget);
-});
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('CONTAINER', e.target, e.currentTarget);
+// });
 
-document.querySelector('.nav').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('NAV', e.target, e.currentTarget);
-});
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', e.target, e.currentTarget);
+// });
