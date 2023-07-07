@@ -11,6 +11,10 @@ const tabContent = document.querySelectorAll('.operations__content');
 // menu fade
 const nav = document.querySelector('.nav');
 
+// IntersectionObserver
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
 ///////////////////////////////////////
 // Modal window
 
@@ -127,6 +131,42 @@ const handleHover = function (e) {
 // select the nav since its the parent of all elements like logo and links
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Sticky Nav
+
+// old way
+// const initialCoordinate = section1.getBoundingClientRect();
+
+// window.addEventListener('scroll', function () {
+//   if (this.window.scrollY > initialCoordinate.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log([entry], entries);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+// root is basically the target
+// to make the target the window object/viewport, we set it to null
+// is the percentage that is visible in our root/viewport
+// intersectionRatio
+
+const HeaderObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+HeaderObserver.observe(header);
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// LECTURE
 
 // btnScrollTo.addEventListener('click', function (e) {
 //   const s1coordinate = section1.getBoundingClientRect();
