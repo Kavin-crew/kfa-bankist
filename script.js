@@ -4,9 +4,12 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
 // tabs
-const tabs = document.querySelectorAll(".operations__tab");
-const tabsContainer = document.querySelector(".operations__tab-container");
-const tabContent = document.querySelectorAll(".operations__content");
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabContent = document.querySelectorAll('.operations__content');
+
+// menu fade
+const nav = document.querySelector('.nav');
 
 ///////////////////////////////////////
 // Modal window
@@ -76,24 +79,54 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 // Tabs
 
 // event deligation
-tabsContainer.addEventListener("click", function (e) {
-  const clicked = e.target.closest(".operations__tab");
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
   if (!clicked) return;
 
   //   remove all active class
-  tabs.forEach((btn) => btn.classList.remove("operations__tab--active"));
+  tabs.forEach(btn => btn.classList.remove('operations__tab--active'));
   //   remove all active class to the content
-  tabContent.forEach((content) =>
-    content.classList.remove("operations__content--active")
+  tabContent.forEach(content =>
+    content.classList.remove('operations__content--active')
   );
   //   then add active class to current tab clicked
-  clicked.classList.add("operations__tab--active");
+  clicked.classList.add('operations__tab--active');
   //   then add active class to current content
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
-    .classList.add("operations__content--active");
+    .classList.add('operations__content--active');
 });
 
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Menu fade animation
+
+// mouseenter doesnt bubble, so we will use mouseover
+// const handleHover = function (e, opacity) , since we used bind, the opacity parameter can be removed, since currentTarge === this
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(element => {
+      if (element !== link) element.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// nav.addEventListener('mouseover', function (e) {
+//   handleHover(e, 0.5);
+// });
+
+// nav.addEventListener('mouseout', function (e) {
+//   handleHover(e, 1);
+// });
+
+// select the nav since its the parent of all elements like logo and links
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
 
 // btnScrollTo.addEventListener('click', function (e) {
 //   const s1coordinate = section1.getBoundingClientRect();
