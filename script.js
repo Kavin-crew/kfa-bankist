@@ -1,7 +1,12 @@
 'use strict';
-
+// scrolling
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+
+// tabs
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabContent = document.querySelectorAll(".operations__content");
 
 ///////////////////////////////////////
 // Modal window
@@ -65,6 +70,30 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Tabs
+
+// event deligation
+tabsContainer.addEventListener("click", function (e) {
+  const clicked = e.target.closest(".operations__tab");
+  if (!clicked) return;
+
+  //   remove all active class
+  tabs.forEach((btn) => btn.classList.remove("operations__tab--active"));
+  //   remove all active class to the content
+  tabContent.forEach((content) =>
+    content.classList.remove("operations__content--active")
+  );
+  //   then add active class to current tab clicked
+  clicked.classList.add("operations__tab--active");
+  //   then add active class to current content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
+});
+
 
 // btnScrollTo.addEventListener('click', function (e) {
 //   const s1coordinate = section1.getBoundingClientRect();
