@@ -15,6 +15,9 @@ const nav = document.querySelector('.nav');
 const header = document.querySelector('.header');
 const navHeight = nav.getBoundingClientRect().height;
 
+// revealing elements in scroll
+const allSections = document.querySelectorAll('.section');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -163,6 +166,63 @@ const HeaderObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`,
 });
 HeaderObserver.observe(header);
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Revealing Elements on Scroll
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+
+  //guard clause,
+  if (!entry.isIntersecting) return;
+  // remove the hidden class
+  entry.target.classList.remove('section--hidden');
+  // unobserve once section displayed
+  observer.unobserve(entry.target);
+};
+const sectionOption = {
+  root: null,
+  threshold: 0.15,
+};
+
+// creating an observer
+const sectionObserver = new IntersectionObserver(revealSection, sectionOption);
+// to observe all sections, we nee to loop over
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Lazy Loading Images
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener('load', () => {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgOptions = {
+  root: null,
+  threshold: 0,
+};
+
+const imgObserver = new IntersectionObserver(loadImg, imgOptions);
+
+imgTargets.forEach(img => {
+  imgObserver.observe(img);
+});
 
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
