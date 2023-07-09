@@ -25,7 +25,7 @@ const imgTargets = document.querySelectorAll('img[data-src]');
 const slides = document.querySelectorAll('.slide');
 const btnRight = document.querySelector('.slider__btn--right');
 const btnLeft = document.querySelector('.slider__btn--left');
-
+const dotContainer = document.querySelector('.dots');
 ///////////////////////////////////////
 // Modal window
 
@@ -83,7 +83,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   // Matching the strategy
   if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
-    console.log(id);
 
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
@@ -157,7 +156,6 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 
 const stickyNav = function (entries) {
   const [entry] = entries;
-  console.log([entry], entries);
 
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
@@ -234,43 +232,96 @@ imgTargets.forEach(img => {
 //////////////////////////////////////////////////
 // Slider
 
-// current slide
-let curSlide = 0;
-// number of slides
-const maxSlide = slides.length;
+const slider = function () {
+  // current slide
+  let curSlide = 0;
+  // number of slides
+  const maxSlide = slides.length;
 
-// load the slider side by side
-const goToSlide = function (slide) {
-  slides.forEach((s, i) => {
-    s.style.transform = `translateX(${100 * (i - slide)}%)`;
+  // load the slider side by side
+  const goToSlide = function (slide) {
+    slides.forEach((s, i) => {
+      s.style.transform = `translateX(${100 * (i - slide)}%)`;
+    });
+  };
+
+  // next slide
+  const nextSlide = function () {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // prev slide
+  const prevSlide = function () {
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  // pressing left and right arrow key
+  document.addEventListener('keydown', function (e) {
+    // pressing key
+    if (e.key === 'ArrowLeft') prevSlide();
+    // if (e.key === 'ArrowRight') nextSlide();
+    // short circuiting, both works the same way in pressing the key
+    // e.key === 'ArrowLeft' && prevSlide();
+    e.key === 'ArrowRight' && nextSlide();
   });
+
+  // Slider Dots
+  // Creating dots
+  const createDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+  const activateDot = function (slide) {
+    // remove all the dots upon site loads
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add(`dots__dot--active`);
+  };
+
+  // adding event on dot container
+  dotContainer.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (e.target.classList.contains('dots__dot')) {
+      // const slide = e.target.dataset.slide;
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+    }
+  });
+  // initialize all needed function
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activateDot(0);
+  };
+  init();
 };
-goToSlide(0);
-
-// next slide
-const nextSlide = function () {
-  if (curSlide === maxSlide - 1) {
-    curSlide = 0;
-  } else {
-    curSlide++;
-  }
-
-  goToSlide(curSlide);
-};
-
-// prev slide
-const prevSlide = function () {
-  if (curSlide === 0) {
-    curSlide = maxSlide - 1;
-  } else {
-    curSlide--;
-  }
-
-  goToSlide(curSlide);
-};
-
-btnRight.addEventListener('click', nextSlide);
-btnLeft.addEventListener('click', prevSlide);
+slider();
 
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
