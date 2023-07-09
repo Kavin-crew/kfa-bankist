@@ -547,3 +547,21 @@ const h1 = document.querySelector('h1');
 // [...h1.parentElement.children].forEach(function (el) {
 //   if (el !== h1) el.style.color = 'red';
 // });
+
+// // displaying an event once html and javascript is parsed
+// // images wont be loaded here first
+// document.addEventListener('DOMContentLoaded', function (e) {
+//   console.log(e);
+// });
+
+// // displaying an event once html and css and images is completely loaded
+// window.addEventListener('load', function (e) {
+//   console.log(e);
+// });
+
+// // send an message once refresh/closing the page
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
