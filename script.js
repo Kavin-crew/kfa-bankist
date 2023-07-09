@@ -18,6 +18,14 @@ const navHeight = nav.getBoundingClientRect().height;
 // revealing elements in scroll
 const allSections = document.querySelectorAll('.section');
 
+// lazy loading images
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+// Slider
+const slides = document.querySelectorAll('.slide');
+const btnRight = document.querySelector('.slider__btn--right');
+const btnLeft = document.querySelector('.slider__btn--left');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -197,8 +205,6 @@ allSections.forEach(section => {
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 // Lazy Loading Images
-const imgTargets = document.querySelectorAll('img[data-src]');
-
 const loadImg = function (entries, observer) {
   const [entry] = entries;
 
@@ -223,6 +229,48 @@ const imgObserver = new IntersectionObserver(loadImg, imgOptions);
 imgTargets.forEach(img => {
   imgObserver.observe(img);
 });
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Slider
+
+// current slide
+let curSlide = 0;
+// number of slides
+const maxSlide = slides.length;
+
+// load the slider side by side
+const goToSlide = function (slide) {
+  slides.forEach((s, i) => {
+    s.style.transform = `translateX(${100 * (i - slide)}%)`;
+  });
+};
+goToSlide(0);
+
+// next slide
+const nextSlide = function () {
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+
+  goToSlide(curSlide);
+};
+
+// prev slide
+const prevSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlide - 1;
+  } else {
+    curSlide--;
+  }
+
+  goToSlide(curSlide);
+};
+
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
 
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
